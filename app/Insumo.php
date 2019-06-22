@@ -22,4 +22,14 @@ class Insumo extends Model
         }
         return $estoque;
     }
+
+    public function unidade()
+    {
+        return $this->belongsTo('App\Unidade');
+    }
+
+    public function fornecedor()
+    {
+        return $this->belongsTo('App\Fornecedor');
+    }
 }
