@@ -33,3 +33,9 @@ Route::prefix('unidades')->group(function () {
     Route::post('salvar/{id?}', 'UnidadesAPIController@salvar');
     Route::get('listar', 'UnidadesAPIController@listar');
 });
+
+Route::prefix('insumos')->group(function () {
+    Route::post('salvar/{id?}', 'InsumosAPIController@salvar');
+    Route::get('listar', 'InsumosAPIController@listar');
+    Route::get('consultar/{id}', 'InsumosAPIController@consultar');
+});
