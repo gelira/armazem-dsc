@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('clientes')->group(function () {
+    Route::post('salvar/{id?}', 'ClientesAPIController@salvar');
+    Route::get('listar', 'ClientesAPIController@listar');
+    Route::get('consultar/{id}', 'ClientesAPIController@consultar');
+});
