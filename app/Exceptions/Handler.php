@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
         {
             return response()->json([
                 'message' => $exception->getModel() . ' not found'
-            ]);
+            ], 404);
         }
         return parent::render($request, $exception);
     }
