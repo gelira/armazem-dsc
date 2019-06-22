@@ -9,7 +9,7 @@ class UnidadesAPIController extends Controller
 {
     use ModelNotFoundTrait;
 
-    private $modelName = 'Fornecedor';
+    private $modelName = 'Unidade';
 
     private function searchModelDB($id)
     {
