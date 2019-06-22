@@ -22,3 +22,9 @@ Route::prefix('clientes')->group(function () {
     Route::get('listar', 'ClientesAPIController@listar');
     Route::get('consultar/{id}', 'ClientesAPIController@consultar');
 });
+
+Route::prefix('fornecedors')->group(function () {
+    Route::post('salvar/{id?}', 'FornecedorsAPIController@salvar');
+    Route::get('listar', 'FornecedorsAPIController@listar');
+    Route::get('consultar/{id}', 'FornecedorsAPIController@consultar');
+});
