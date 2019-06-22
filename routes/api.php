@@ -28,3 +28,8 @@ Route::prefix('fornecedors')->group(function () {
     Route::get('listar', 'FornecedorsAPIController@listar');
     Route::get('consultar/{id}', 'FornecedorsAPIController@consultar');
 });
+
+Route::prefix('unidades')->group(function () {
+    Route::post('salvar/{id?}', 'UnidadesAPIController@salvar');
+    Route::get('listar', 'UnidadesAPIController@listar');
+});
