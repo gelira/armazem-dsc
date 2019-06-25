@@ -27,14 +27,10 @@ class InsumosAPIController extends Controller
         $regras = [
             'descricao' => 'required|max:50',
             'materia_prima' => 'required|boolean',
-            'estoque' => 'nullable|numeric'
+            'estoque' => 'nullable|numeric',
+            'fornecedor_id' => 'required|integer|exists:fornecedors,id',
+            'unidade_id' => 'required|integer|exists:unidades,id'
         ];
-
-        if ($insumo->id == null)
-        {
-            $regras['fornecedor_id'] = 'required|integer|exists:fornecedors,id';
-            $regras['unidade_id'] = 'required|integer|exists:unidades,id';
-        }
 
         Validator::make($rq->all(), $regras, [
             'fornecedor_id.exists' => 'Fornecedor not found',
@@ -42,10 +38,6 @@ class InsumosAPIController extends Controller
         ])->validate();
 
         $dados = $rq->only(array_keys($regras));
-        if (array_key_exists('estoque', $dados))
-        {
-            $dados['estoque'] = $insumo->filtrarEstoque($dados['estoque']);
-        }
         $insumo->fill($dados)->save();
 
         return response()->json(['id' => $insumo->id], 200);
