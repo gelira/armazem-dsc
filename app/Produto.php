@@ -13,4 +13,10 @@ class Produto extends Model
     protected $attributes = [
         'estoque' => 0
     ];
+
+    public function insumos()
+    {
+        return $this->belongsToMany('App\Insumo')
+            ->using('App\InsumoProduto');
+    }
 }
