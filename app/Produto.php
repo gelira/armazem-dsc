@@ -20,4 +20,9 @@ class Produto extends Model
             ->using('App\InsumoProduto')
             ->withPivot('quantidade');
     }
+
+    public function producaos()
+    {
+        return $this->hasMany('App\Producao');
+    }
 }
