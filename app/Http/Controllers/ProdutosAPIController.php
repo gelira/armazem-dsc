@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Produto;
 use Illuminate\Support\Facades\Validator;
 use App\InsumoProduto;
+use App\Producao;
 
 class ProdutosAPIController extends Controller
 {
@@ -87,5 +88,45 @@ class ProdutosAPIController extends Controller
             ->where('id', $id)
             ->first();
         return response()->json($produto, 200);
+    }
+
+    public function produzir(Request $rq)
+    {
+        Validator::make($rq->all(), [
+            'produto_id' => 'required|integer|exists:produtos,id',
+            'lote' => 'required|integer',
+            'quantidade' => 'required|integer|min:1',
+            'perecivel' => 'required|boolean',
+            'expira_em' => 'required|date_format:d/m/Y'
+        ], [
+            'exists' => 'Produto not found',
+            'date_format' => 'Data inválida'
+        ])->validate();
+
+        $produto = $this->getModel($rq->produto_id);
+        $qtd = $rq->quantidade;
+        foreach ($produto->insumos as $insumo)
+        {
+            if ($qtd * $insumo->pivot->quantidade > $insumo->estoque)
+            {
+                return response()->json(['message' => 'Insumos insuficientes'], 401);
+            }
+        }
+
+        $producao = (new Producao())
+            ->fill($rq->only('lote', 'quantidade', 'perecivel', 'expira_em'))
+            ->fill(['data' => now()]);
+        $produto->producaos()->save($producao);
+
+        foreach ($produto->insumos as $insumo)
+        {
+            $insumo->estoque -= $qtd * $insumo->pivot->quantidade;
+            $insumo->save();
+        }
+
+        $produto->estoque += $qtd;
+        $produto->save();
+
+        return response()->json(['id' => $producao->id], 200);
     }
 }
