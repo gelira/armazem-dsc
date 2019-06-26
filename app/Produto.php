@@ -17,6 +17,7 @@ class Produto extends Model
     public function insumos()
     {
         return $this->belongsToMany('App\Insumo')
-            ->using('App\InsumoProduto');
+            ->using('App\InsumoProduto')
+            ->withPivot('quantidade');
     }
 }
