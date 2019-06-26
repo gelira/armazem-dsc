@@ -27,10 +27,14 @@ class InsumosAPIController extends Controller
         $regras = [
             'descricao' => 'required|max:50',
             'materia_prima' => 'required|boolean',
-            'estoque' => 'nullable|numeric',
             'fornecedor_id' => 'required|integer|exists:fornecedors,id',
             'unidade_id' => 'required|integer|exists:unidades,id'
         ];
+
+        if ($id != null)
+        {
+            $regras['estoque'] = 'required|numeric';
+        }
 
         Validator::make($rq->all(), $regras, [
             'fornecedor_id.exists' => 'Fornecedor not found',
@@ -45,9 +49,7 @@ class InsumosAPIController extends Controller
 
     public function listar()
     {
-        return response()->json(
-            Insumo::select('id', 'descricao', 'materia_prima', 'estoque')->get(), 
-        200);
+        return response()->json(Insumo::all(), 200);
     }
 
     public function consultar($id)
@@ -55,7 +57,8 @@ class InsumosAPIController extends Controller
         return response()->json(
             $this->getModel($id)
                 ->with(['fornecedor', 'unidade'])
-                ->get(), 
+                ->where('id', $id)
+                ->first(), 
         200);
     }
 }

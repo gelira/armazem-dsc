@@ -14,15 +14,6 @@ class Insumo extends Model
         'estoque' => 0
     ];
 
-    public function filtrarEstoque($estoque)
-    {
-        if ($estoque == null)
-        {
-            $estoque = $this->attributes['estoque'];
-        }
-        return $estoque;
-    }
-
     public function unidade()
     {
         return $this->belongsTo('App\Unidade');
