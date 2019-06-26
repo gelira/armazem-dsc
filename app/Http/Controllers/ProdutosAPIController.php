@@ -73,4 +73,19 @@ class ProdutosAPIController extends Controller
 
         return response()->json(['id' => $produto->id], 200);
     }
+
+    public function listar()
+    {
+        $lista = Produto::with(['insumos', 'insumos.unidade', 'insumos.fornecedor'])->get();
+        return response()->json($lista, 200);
+    }
+
+    public function consultar($id)
+    {
+        $produto = $this->getModel($id)
+            ->with(['insumos', 'insumos.unidade', 'insumos.fornecedor'])
+            ->where('id', $id)
+            ->first();
+        return response()->json($produto, 200);
+    }
 }

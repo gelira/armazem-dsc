@@ -42,4 +42,6 @@ Route::prefix('insumos')->group(function () {
 
 Route::prefix('produtos')->group(function () {
     Route::post('salvar/{id?}', 'ProdutosAPIController@salvar');
+    Route::get('listar', 'ProdutosAPIController@listar');
+    Route::get('consultar/{id}', 'ProdutosAPIController@consultar');
 });
