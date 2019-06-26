@@ -46,3 +46,7 @@ Route::prefix('produtos')->group(function () {
     Route::get('consultar/{id}', 'ProdutosAPIController@consultar');
     Route::put('produzir', 'ProdutosAPIController@produzir');
 });
+
+Route::prefix('vendas')->group(function () {
+    Route::put('realizar', 'VendasAPIController@realizarVenda');
+});
