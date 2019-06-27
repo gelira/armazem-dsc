@@ -9,4 +9,9 @@ class Venda extends Model
     protected $fillable = [
         'cliente_id', 'produto_id', 'quantidade', 'preco_unitario', 'base_lucro', 'nf'
     ];
+
+    public function produto()
+    {
+        return $this->belongsTo('App\Produto');
+    }
 }
