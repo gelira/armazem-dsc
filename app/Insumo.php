@@ -23,4 +23,9 @@ class Insumo extends Model
     {
         return $this->belongsTo('App\Fornecedor');
     }
+
+    public function compras()
+    {
+        return $this->hasMany('App\Compra');
+    }
 }
