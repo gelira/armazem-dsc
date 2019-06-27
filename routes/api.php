@@ -51,3 +51,7 @@ Route::prefix('vendas')->group(function () {
     Route::put('realizar', 'VendasAPIController@realizarVenda');
     Route::get('balanco/{data_inicio}/{data_fim}', 'VendasAPIController@balanco');
 });
+
+Route::prefix('compras')->group(function () {
+    Route::put('realizar', 'ComprasAPIController@realizarCompra');
+});
