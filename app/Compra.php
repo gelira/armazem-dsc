@@ -8,6 +8,6 @@ class Compra extends Model
 {
     protected $fillable = [
         'insumo_id', 'quantidade', 'valor_unitario', 'icms', 'frete', 
-        'ipi', 'nf', 'data_compra', 'data_entrega'
+        'ipi', 'nf', 'data_compra', 'data_entrada'
     ];
 }
