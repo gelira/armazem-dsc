@@ -46,19 +46,16 @@ class ProdutosAPIController extends Controller
             'faixa_etaria_min' => 'required|integer|min:0',
             'faixa_etaria_max' => 'required|integer|min:0',
             'num_patente' => 'required|string|max:10',
+            'insumos' => 'required|array',
             'insumos.*.insumo_id' => 'required|integer|exists:insumos,id',
             'insumos.*.quantidade' => 'required|numeric|min:0',
         ];
 
-        if ($id == null)
+        if ($id != null)
         {
-            $regras['insumos'] = 'required|array';
-        }
-        else 
-        {
-            $regras['insumos'] = 'nullable|array';
             $regras['estoque'] = 'required|integer|min:0';
             $lista_dados[] = 'estoque';
+            $produto->insumos()->detach();
         }
 
         Validator::make($rq->all(), $regras, ['exists' => 'Insumo not found'])->validate();
@@ -77,14 +74,13 @@ class ProdutosAPIController extends Controller
 
     public function listar()
     {
-        $lista = Produto::with(['insumos', 'insumos.unidade', 'insumos.fornecedor'])->get();
-        return response()->json($lista, 200);
+        return response()->json(Produto::all(), 200);
     }
 
     public function consultar($id)
     {
         $produto = $this->getModel($id)
-            ->with(['insumos', 'insumos.unidade', 'insumos.fornecedor'])
+            ->with('insumos')
             ->where('id', $id)
             ->first();
         return response()->json($produto, 200);
