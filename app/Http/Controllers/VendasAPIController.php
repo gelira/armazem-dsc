@@ -79,10 +79,9 @@ class VendasAPIController extends Controller
             'produtos' => []
         ];
 
-        $produtos_vendidos = Produto::with('vendas')
-            ->join('vendas', 'produtos.id', '=', 'vendas.produto_id')
-            ->where('vendas.data', '>=', $data_inicio)
-            ->where('vendas.data', '<=', $data_fim)
+        $produtos_vendidos = Produto::join('vendas', 'produtos.id', '=', 'vendas.produto_id')
+            ->where('vendas.data', '>=', $data_inicio->format('Y-m-d'))
+            ->where('vendas.data', '<=', $data_fim->format('Y-m-d'))
             ->select('produtos.*')
             ->groupBy('produtos.id')
             ->get();
@@ -94,7 +93,12 @@ class VendasAPIController extends Controller
             $preco_unitario = 0;
             $preco_total = 0;
 
-            foreach ($produto->vendas as $venda) 
+            $vendas = $produto->vendas()
+                ->where('vendas.data', '>=', $data_inicio->format('Y-m-d'))
+                ->where('vendas.data', '<=', $data_fim->format('Y-m-d'))
+                ->get();
+
+            foreach ($vendas as $venda) 
             {
                 $quantidade += $venda->quantidade;
                 $lucro += ($venda->preco_total - $venda->quantidade * $venda->preco_unitario);
